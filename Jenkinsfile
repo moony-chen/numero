@@ -3,10 +3,14 @@ pipeline {
   stages {
     
     stage('Build') {
-      steps {
-        withMaven(maven: 'M3', jdk: 'jdk8') {
-          sh 'mvn clean install cobertura:cobertura -Dcobertura.report.format=xml'
+        agent { docker {
+            reuseNode true
+            image 'maven:3.6.3-jdk-8' }
         }
+      steps {
+
+          sh 'mvn clean install cobertura:cobertura -Dcobertura.report.format=xml'
+
 
       }
     }
